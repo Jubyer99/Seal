@@ -1,0 +1,33 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.Scanner;
+
+class CodeGenerator {
+    private String userName;
+    private String randomCode;
+
+    public CodeGenerator(String userName) {
+        this.userName = userName;
+        this.randomCode = generateCode();
+    }
+
+    private String generateCode() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuilder code = new StringBuilder("JN-");
+
+        for (int i = 0; i < 12; i++) {
+            code.append(chars.charAt(random.nextInt(chars.length())));
+            if ((i + 1) % 4 == 0 && i != 11) code.append("-");
+        }
+        return code.toString();
+    }
+
+    public void saveToFile() {
+        try (FileWriter writer = new FileWriter("GeneratedCode.txt", true)) {
+            writer.write("User: " + userName + "\n");
+            writer.write("Generated Code: " + randomCode + "\n");
+            writer.write("Date: " + LocalDateTime.now() + "\n");
+            writer.write("-------------------------------\n");
